@@ -20,7 +20,7 @@ jobs:
           git remote add sekai https://github.com/SagerNet/sing-box.git
           git fetch --tags sekai
           version_new=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          version_old=$(curl -sSl https://github.com/juewuy/ShellCrash/releases/download/singbox_core_PuerNya/version)    
+          version_old=$(curl -sSl https://github.com/Cathgao/ShellCrash/releases/download/singbox_core_PuerNya/version)    
           if [ "$version_old" != "$version_new" ];then
             echo a=$version_old >> $GITHUB_ENV
             echo b=$version_new >> $GITHUB_ENV
@@ -33,7 +33,7 @@ jobs:
     needs: check_version
     if: ${{ success() }}
     permissions: write-all
-    uses: juewuy/ShellCrash/.github/workflows/update_singbox_core.yaml@dev
+    uses: Cathgao/ShellCrash/.github/workflows/update_singbox_core.yaml@dev
     with:
       tag1: PuerNya/sing-box
       tag2: building
