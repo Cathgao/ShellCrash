@@ -135,6 +135,7 @@ jobs:
         curl -kfSL -o geodata/mrs_geosite_cn.mrs https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/cn.mrs
         mv -f ../ca-bundle.crt ./fix/ca-certificates.crt
         sed -i "s/GeoIP_v=.*/GeoIP_v=$(date '+%Y%m%d')/" version #修改版本号
+        echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
         echo 数据库及根证书文件更新完成！
 
     - name: Commit and push
@@ -143,6 +144,14 @@ jobs:
         git add . && git commit -m "自动更新最新Dashboard、地址库、根证书" || exit 0
         git push
 
+    - name: send telegram message
+      uses: appleboy/telegram-action@master
+      with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+          ShellClash GeoIP updated. Update date: ${{ env.CURRENT_DATE }}
+        
     - name: Cleanup Workflow
       uses: Mattraks/delete-workflow-runs@main
       with:
